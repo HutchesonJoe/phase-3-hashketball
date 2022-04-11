@@ -1,4 +1,5 @@
-# Write your code below game_hash
+require 'pry'
+
 def game_hash
   {
     home: {
@@ -126,4 +127,72 @@ def game_hash
   }
 end
 
-# Write code here
+def all_players 
+  # players = []
+  home_players = game_hash[:home][:players]
+  away_players = game_hash[:away][:players]
+  home_players + away_players
+end
+
+def num_points_scored name_player
+  found_player = all_players.find {|player| player[:player_name] == name_player}
+  found_player[:points]
+end
+
+def shoe_size name_player
+  found_player = all_players.find {|player| player[:player_name] == name_player}
+  found_player[:shoe]
+end
+
+
+def team_colors name_team
+  game_hash.each do |team, team_info| 
+    if team_info[:team_name] ==  name_team
+      return team_info[:colors]
+    end
+  end
+end
+
+def team_names
+  team_names = game_hash.map {|team, team_info| team_info[:team_name]}
+  team_names
+end
+
+def player_numbers name_team
+  game_hash.each do |team, team_info| 
+    if team_info[:team_name] ==  name_team
+      team_players = team_info[:players]
+      number_arr = team_players.map{|player| player[:number]}
+      return number_arr
+    end
+  end
+end
+
+def player_stats name_player
+  found_player = all_players.find {|player| player[:player_name] == name_player}
+end
+
+def most_points_scored
+  most_points = all_players.map {|player| player[:points]}.max()
+  most_points_player = all_players.find{|player| player[:points] == most_points}
+  most_points_player[:player_name]
+end
+
+def winning_team
+  home = game_hash[:home][:players].map{|player| player[:points]}
+  away = game_hash[:away][:players].map{|player| player[:points]}
+  total_points = {home.sum => game_hash[:home][:team_name], away.sum => game_hash[:away][:team_name]}
+  high_points = [home.sum, away.sum].max
+  return total_points[high_points]
+  binding.pry
+end
+binding.pry
+
+def big_shoe_rebounds 
+  max_shoe_size = all_players.map {|player| player[:shoe]}.max()
+  big_foot_player = all_players.find{|player| player[:shoe] == max_shoe_size}
+  big_foot_player[:rebounds]
+end
+
+
+# game_hash[:home][:players].map{|player| puts player[:player_name]}
